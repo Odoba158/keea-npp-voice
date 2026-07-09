@@ -15,6 +15,7 @@ export default function Home() {
   const [isAnonymous, setIsAnonymous] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [trackingId, setTrackingId] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +32,8 @@ export default function Home() {
     const newTrackingId = "KEEA-" + Math.floor(100000 + Math.random() * 900000);
     
     try {
-      const { error } = await supabase.from('submissions').insert([
+      // 1. Create the submission
+      const { data: submissionData, error } = await supabase.from('submissions').insert([
         {
           tracking_id: newTrackingId,
           type: type.includes('complaint') ? 'complaint' : type.includes('request') ? 'request' : 'suggestion',
@@ -42,11 +44,39 @@ export default function Home() {
           phone: phone,
           status: 'Pending'
         }
-      ]);
+      ]).select('id').single();
 
       if (error) throw error;
       
+      // 2. Upload file if selected
+      if (selectedFile && submissionData) {
+        const fileExt = selectedFile.name.split('.').pop();
+        const fileName = `${newTrackingId}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const filePath = `uploads/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('evidence')
+          .upload(filePath, selectedFile);
+
+        if (uploadError) {
+          console.error("Error uploading file:", uploadError);
+          // Don't throw, we still want to show success for the ticket
+        } else {
+          // Get public URL
+          const { data: { publicUrl } } = supabase.storage
+            .from('evidence')
+            .getPublicUrl(filePath);
+            
+          // Link to submission in media table
+          await supabase.from('media').insert([{
+            submission_id: submissionData.id,
+            file_url: publicUrl
+          }]);
+        }
+      }
+
       setTrackingId(newTrackingId);
+      setSelectedFile(null); // Reset file
     } catch (err) {
       console.error("Error submitting form:", err);
       alert("Failed to submit. Please check your connection and try again.");
@@ -220,12 +250,25 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Attach Evidence (Optional)</Label>
-                    <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:bg-muted/50 transition-colors cursor-pointer bg-background">
-                      <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-sm font-medium text-foreground">Click to upload media files</p>
-                      <p className="text-xs text-muted-foreground mt-1">Image, Audio, or Video (Max 50MB)</p>
-                    </div>
+                    <Label htmlFor="file-upload">Attach Evidence (Optional)</Label>
+                    <label htmlFor="file-upload" className="block w-full">
+                      <div className={`border-2 border-dashed ${selectedFile ? 'border-primary bg-primary/5' : 'border-border bg-background'} rounded-lg p-6 text-center hover:bg-muted/50 transition-colors cursor-pointer`}>
+                        <Upload className={`h-8 w-8 mx-auto mb-2 ${selectedFile ? 'text-primary' : 'text-muted-foreground'}`} />
+                        <p className="text-sm font-medium text-foreground">
+                          {selectedFile ? selectedFile.name : "Click to upload media files"}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {selectedFile ? `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB` : "Image, Audio, or Video (Max 50MB)"}
+                        </p>
+                      </div>
+                    </label>
+                    <input 
+                      id="file-upload" 
+                      type="file" 
+                      className="hidden" 
+                      accept="image/*,video/*,audio/*"
+                      onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    />
                   </div>
 
                   <Button type="submit" className="w-full h-12 text-base bg-red-600 hover:bg-red-700" disabled={isSubmitting}>

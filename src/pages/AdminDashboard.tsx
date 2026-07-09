@@ -21,14 +21,19 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchTickets = async () => {
-    setIsLoading(true);
-    const { data, error } = await supabase
-      .from('submissions')
-      .select('*')
-      .order('created_at', { ascending: false });
-      
-    if (data) setTickets(data);
-    setIsLoading(false);
+    try {
+      const { data, error } = await supabase
+        .from('submissions')
+        .select('*, media(file_url)')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setTickets(data || []);
+    } catch (err) {
+      console.error("Error fetching tickets:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUpdate = async () => {
@@ -201,13 +206,22 @@ export default function AdminDashboard() {
                     </p>
                   </div>
 
-                  {selectedTicket.hasMedia && (
+                  {selectedTicket.media && selectedTicket.media.length > 0 && (
                     <div className="mb-6">
                       <h4 className="text-sm font-semibold text-slate-900 mb-3">Attached Evidence</h4>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-slate-200 h-32 rounded-lg flex items-center justify-center text-slate-400">
-                          [Image Placeholder]
-                        </div>
+                        {selectedTicket.media.map((m: any, idx: number) => (
+                          <a key={idx} href={m.file_url} target="_blank" rel="noopener noreferrer" className="block">
+                            {m.file_url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+                              <img src={m.file_url} alt="Evidence" className="w-full h-32 object-cover rounded-lg border border-slate-200 hover:opacity-80 transition-opacity" />
+                            ) : (
+                              <div className="bg-slate-200 h-32 rounded-lg flex flex-col items-center justify-center text-slate-500 hover:bg-slate-300 transition-colors border border-slate-300">
+                                <span className="font-medium">View File</span>
+                                <span className="text-xs mt-1">Opens in new tab</span>
+                              </div>
+                            )}
+                          </a>
+                        ))}
                       </div>
                     </div>
                   )}
