@@ -94,9 +94,9 @@ export default function Home() {
     { name: "Agnes E. A. Donkoh", role: "Treasurer", phone: "233244871779", img: "/images/Agnes E. A. Donkoh.jpeg", align: "object-center" },
     { name: "Benedict Ackon", role: "Organizer", phone: "233549470410", img: "/images/organizer.jpg" },
     { name: "Lawrencia Entsuah", role: "Women Organizer", phone: "233244036888", img: "/images/Lawrencia Entsuah.jpeg" },
-    { name: "Felix Ofori-Boafo", role: "Youth Organizer", phone: "233246762615", img: "/images/Felix Ofori-Boafo.jpeg", align: "object-center" },
+    { name: "Felix Ofori-Boafo", role: "Youth Organizer", phone: "233246762615", img: "/images/Felix Ofori-Boafo.jpeg", align: "object-contain bg-muted" },
     { name: "Baaba Awudu", role: "NASARA Organizer", phone: "233243942762", img: "/images/Baaba Awudu.jpeg" },
-    { name: "Michael Botsio", role: "Communication Officer", phone: "233541134266", img: "/images/Michael Botsio.jpeg", align: "object-center" },
+    { name: "Michael Botsio", role: "Communication Officer", phone: "233541134266", img: "/images/Michael Botsio.jpeg", align: "object-contain bg-muted" },
     { name: "Odoba", role: "Help Desk", phone: "233248778557", img: "/images/help desk.jpg" }
   ];
 
