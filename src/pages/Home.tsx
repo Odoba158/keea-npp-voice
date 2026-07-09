@@ -91,12 +91,12 @@ export default function Home() {
     { name: "Dr. Anthony Bordoh", role: "2nd Vice Chairman", phone: "233243518095", img: "/images/Dr. Anthony Bordoh.jpeg" },
     { name: "Frank Mensah", role: "Secretary", phone: "233244417225", img: "/images/Frank Mensah.jpeg" },
     { name: "Raymond Tsiquaye", role: "Assistant Secretary", phone: "233244649145", img: "/images/Raymond Tsiquaye.jpeg" },
-    { name: "Agnes E. A. Donkoh", role: "Treasurer", phone: "233244871779", img: "/images/Agnes E. A. Donkoh.jpeg" },
+    { name: "Agnes E. A. Donkoh", role: "Treasurer", phone: "233244871779", img: "/images/Agnes E. A. Donkoh.jpeg", align: "object-center" },
     { name: "Benedict Ackon", role: "Organizer", phone: "233549470410", img: "/images/organizer.jpg" },
     { name: "Lawrencia Entsuah", role: "Women Organizer", phone: "233244036888", img: "/images/Lawrencia Entsuah.jpeg" },
-    { name: "Felix Ofori-Boafo", role: "Youth Organizer", phone: "233246762615", img: "/images/Felix Ofori-Boafo.jpeg" },
+    { name: "Felix Ofori-Boafo", role: "Youth Organizer", phone: "233246762615", img: "/images/Felix Ofori-Boafo.jpeg", align: "object-center" },
     { name: "Baaba Awudu", role: "NASARA Organizer", phone: "233243942762", img: "/images/Baaba Awudu.jpeg" },
-    { name: "Michael Botsio", role: "Communication Officer", phone: "233541134266", img: "/images/Michael Botsio.jpeg" },
+    { name: "Michael Botsio", role: "Communication Officer", phone: "233541134266", img: "/images/Michael Botsio.jpeg", align: "object-center" },
     { name: "Odoba", role: "Help Desk", phone: "233248778557", img: "/images/help desk.jpg" }
   ];
 
@@ -361,7 +361,7 @@ export default function Home() {
               <Card key={idx} className="border-none shadow-md hover:shadow-lg transition-shadow bg-card overflow-hidden group">
                 <div className="h-48 overflow-hidden relative">
                   <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
-                  <img src={leader.img} alt={leader.name} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" />
+                  <img src={leader.img} alt={leader.name} className={`w-full h-full object-cover ${leader.align || 'object-top'} group-hover:scale-105 transition-transform duration-500`} />
                 </div>
                 <CardContent className="p-6 text-center">
                   <h3 className="font-bold text-lg text-foreground mb-1">{leader.name}</h3>
