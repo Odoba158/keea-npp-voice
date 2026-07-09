@@ -361,7 +361,7 @@ export default function Home() {
               <Card key={idx} className="border-none shadow-md hover:shadow-lg transition-shadow bg-card overflow-hidden group">
                 <div className="h-48 overflow-hidden relative">
                   <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
-                  <img src={leader.img} alt={leader.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
+                  <img src={leader.img} alt={leader.name} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <CardContent className="p-6 text-center">
                   <h3 className="font-bold text-lg text-foreground mb-1">{leader.name}</h3>
