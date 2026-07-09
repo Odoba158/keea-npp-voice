@@ -90,7 +90,7 @@ export default function Home() {
     { name: "Ebenezer Obeng", role: "First Vice Chairman", phone: "233243320364", img: "/images/Ebenezer Obeng.jpeg" },
     { name: "Dr. Anthony Bordoh", role: "2nd Vice Chairman", phone: "233243518095", img: "/images/Dr. Anthony Bordoh.jpeg" },
     { name: "Frank Mensah", role: "Secretary", phone: "233244417225", img: "/images/Frank Mensah.jpeg" },
-    { name: "Raymond Tsiquaye", role: "Deputy Secretary", phone: "233244649145", img: "/images/Raymond Tsiquaye.jpeg" },
+    { name: "Henry Raymond Tsiquaye", role: "Deputy Secretary", phone: "233244649145", img: "/images/Raymond Tsiquaye.jpeg" },
     { name: "Agnes E. A. Donkoh", role: "Treasurer", phone: "233244871779", img: "/images/Agnes E. A. Donkoh.jpeg", align: "object-cover object-center" },
     { name: "Benedict Ackon", role: "Organizer", phone: "233549470410", img: "/images/organizer.jpg" },
     { name: "Lawrencia Entsuah", role: "Women Organizer", phone: "233244036888", img: "/images/Lawrencia Entsuah.jpeg" },
