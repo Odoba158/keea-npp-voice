@@ -98,8 +98,8 @@ export default function Home() {
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center overflow-hidden bg-background shadow-sm">
-              <span className="text-primary font-extrabold text-sm">NPP</span>
+            <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden shadow-sm">
+              <img src="/images/logo.png" alt="KEEA Voice Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="font-bold text-foreground leading-tight">KEEA NPP Voice</h1>
