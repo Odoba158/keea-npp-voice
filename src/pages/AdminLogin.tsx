@@ -37,9 +37,9 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-blue-900 to-slate-100 transform -skew-y-6 origin-top-left -z-10" />
+      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-blue-900/50 to-background transform -skew-y-6 origin-top-left -z-10" />
       
       <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
         <Link to="/" className="text-white/80 hover:text-white inline-flex items-center text-sm font-medium transition-colors mb-8 px-4 sm:px-0">
@@ -94,12 +94,12 @@ export default function AdminLogin() {
                   className="h-12"
                 />
               </div>
-              <Button type="submit" className="w-full h-12 text-base mt-2 bg-slate-900 hover:bg-slate-800" disabled={isLoading}>
+              <Button type="submit" className="w-full h-12 text-base mt-2" disabled={isLoading}>
                 {isLoading ? "Authenticating..." : "Sign in to Dashboard"}
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="bg-slate-50 border-t justify-center py-4 text-sm text-slate-500">
+          <CardFooter className="bg-muted/30 border-t justify-center py-4 text-sm text-muted-foreground">
             Secure access for authorized personnel only.
           </CardFooter>
         </Card>
