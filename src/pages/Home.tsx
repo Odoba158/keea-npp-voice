@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ShieldCheck, Zap, HeartHandshake, Upload, User, UserX, Search, MessageSquare, SearchCode, Send, Moon, Sun } from "lucide-react";
+import { ShieldCheck, Zap, HeartHandshake, Upload, User, UserX, Search, MessageSquare, SearchCode, Send, Moon, Sun, Download } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 
 export default function Home() {
@@ -130,9 +130,16 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4 tracking-tight">
             KEEA NPP Voice Platform
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Your voice matters. Whether it's a brilliant suggestion to improve our constituency, a pressing request, or a complaint that needs attention, we are here to listen and act.
           </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/KEEA-Voice-App.apk" download>
+              <Button size="lg" className="rounded-full font-bold px-8 bg-gradient-to-r from-blue-600 to-red-500 hover:opacity-90 transition-opacity border-none shadow-lg text-white">
+                <Download className="mr-2 h-5 w-5" /> Download Android App
+              </Button>
+            </a>
+          </div>
         </div>
 
         {/* Feature Cards (3 columns) */}
