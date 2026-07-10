@@ -131,9 +131,9 @@ export default function Home() {
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               <span className="sr-only">Toggle theme</span>
             </Button>
-            <a href="/dashboard" className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+            {/* <a href="/dashboard" className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
               My Dashboard
-            </a>
+            </a> */}
             <a href="/admin/login" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
               Admin Login
             </a>

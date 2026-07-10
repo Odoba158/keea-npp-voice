@@ -44,12 +44,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<UserAuth />} />
         
-        {/* Main Interface protected by Login */}
-        <Route path="/" element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        } />
+        {/* Main Interface */}
+        <Route path="/" element={<Home />} />
         
 
         {/* Dashboard also protected */}
