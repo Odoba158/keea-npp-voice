@@ -226,6 +226,11 @@ export default function AdminDashboard() {
                       </div>
                       <h2 className="text-2xl font-bold text-foreground mb-2">{selectedTicket.subject}</h2>
                       <p className="text-muted-foreground">Submitted by <strong className="text-foreground">{selectedTicket.is_anonymous ? 'Anonymous' : (selectedTicket.name || 'Anonymous')} {selectedTicket.phone ? `(${selectedTicket.phone})` : ''}</strong> on {new Date(selectedTicket.created_at).toLocaleString()}</p>
+                      {selectedTicket.email && !selectedTicket.is_anonymous && (
+                        <p className="text-muted-foreground mt-1 text-sm">
+                          Email: <a href={`mailto:${selectedTicket.email}`} className="text-primary hover:underline">{selectedTicket.email}</a>
+                        </p>
+                      )}
                     </div>
                     
                     <div className="p-6 flex-1 overflow-auto bg-muted/20">

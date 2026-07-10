@@ -51,6 +51,7 @@ export default function SubmitComplaint() {
         .from('submissions')
         .insert([{
           user_id: user.id,
+          email: user.email,
           tracking_id: newTrackingId,
           type: category,
           subject: title,

@@ -21,11 +21,16 @@ export function useVisitorTracking() {
         // Get basic device info (user agent)
         const deviceInfo = navigator.userAgent;
 
+        // Check if user is logged in
+        const { data: { session } } = await supabase.auth.getSession();
+        const email = session?.user?.email || null;
+
         // Insert visit record
         const { error } = await supabase.from('site_visits').insert([
           {
             visitor_id: visitorId,
             device_info: deviceInfo,
+            email: email, // Will be null for anonymous visitors
           }
         ]);
 
