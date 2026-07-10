@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -33,9 +32,15 @@ export default function Home() {
     const newTrackingId = "KEEA-" + Math.floor(100000 + Math.random() * 900000);
     
     try {
+      // Get the logged in user
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user;
+
       // 1. Create the submission
       const { data: submissionData, error } = await supabase.from('submissions').insert([
         {
+          user_id: user?.id,
+          email: user?.email,
           tracking_id: newTrackingId,
           type: type.includes('complaint') ? 'complaint' : type.includes('request') ? 'request' : 'suggestion',
           subject: title,
@@ -43,7 +48,8 @@ export default function Home() {
           is_anonymous: isAnonymous,
           name: name,
           phone: phone,
-          status: 'Pending'
+          status: 'Pending',
+          category: type.includes('complaint') ? 'complaint' : type.includes('request') ? 'request' : 'suggestion'
         }
       ]).select('id').single();
 
@@ -125,6 +131,9 @@ export default function Home() {
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               <span className="sr-only">Toggle theme</span>
             </Button>
+            <a href="/dashboard" className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+              My Dashboard
+            </a>
             <a href="/admin/login" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
               Admin Login
             </a>
@@ -210,20 +219,106 @@ export default function Home() {
               </div>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="flex flex-col items-center justify-center text-center py-8 space-y-4">
-                <p className="text-lg text-slate-600 mb-2">
-                  To ensure the security and privacy of your submissions, please log in to your account.
-                </p>
-                <Link to="/submit">
-                  <Button size="lg" className="h-14 text-lg bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-900/20 px-8">
-                    <MessageSquare className="mr-2 h-5 w-5" />
-                    Login to Submit a Complaint
+              
+              {!trackingId ? (
+                <form onSubmit={handleFormSubmit} className="space-y-6">
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input id="name" placeholder="E.g., John Doe" required className="bg-background" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="contact">Phone Number</Label>
+                      <Input id="contact" placeholder="050 000 0000" required className="bg-background" />
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3 bg-blue-50/50 p-4 rounded-lg border border-blue-100">
+                    <Checkbox 
+                      id="anonymous" 
+                      checked={isAnonymous} 
+                      onCheckedChange={(checked) => setIsAnonymous(checked as boolean)} 
+                    />
+                    <div className="space-y-1 leading-none">
+                      <Label htmlFor="anonymous" className="font-semibold text-blue-900 cursor-pointer">
+                        Keep my identity anonymous
+                      </Label>
+                      <p className="text-sm text-blue-700/80">
+                        Your identity will be strictly hidden and protected.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="type">Category</Label>
+                    <Select required>
+                      <SelectTrigger id="type" className="bg-background">
+                        <SelectValue placeholder="Select a category..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="suggestion">💡 Suggestion</SelectItem>
+                        <SelectItem value="complaint">⚠️ Complaint</SelectItem>
+                        <SelectItem value="request">📋 Request</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Subject</Label>
+                    <Input id="title" placeholder="Brief title of your submission" required className="bg-background" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="desc">Detailed Description</Label>
+                    <Textarea id="desc" placeholder="Please provide all necessary details here..." className="min-h-[120px] resize-none bg-background" required />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="file-upload">Attach Evidence (Optional)</Label>
+                    <label htmlFor="file-upload" className="block w-full">
+                      <div className={`border-2 border-dashed ${selectedFile ? 'border-primary bg-primary/5' : 'border-border bg-background'} rounded-lg p-6 text-center hover:bg-muted/50 transition-colors cursor-pointer`}>
+                        <Upload className={`h-8 w-8 mx-auto mb-2 ${selectedFile ? 'text-primary' : 'text-muted-foreground'}`} />
+                        <p className="text-sm font-medium text-foreground">
+                          {selectedFile ? selectedFile.name : "Click to upload media files"}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {selectedFile ? `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB` : "Image, Audio, or Video (Max 50MB)"}
+                        </p>
+                      </div>
+                    </label>
+                    <input 
+                      id="file-upload" 
+                      type="file" 
+                      className="hidden" 
+                      accept="image/*,video/*,audio/*"
+                      onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    />
+                  </div>
+
+                  <Button type="submit" className="w-full h-12 text-base bg-red-600 hover:bg-red-700" disabled={isSubmitting}>
+                    {isSubmitting ? "Submitting securely..." : "Submit to Leadership"}
+                    {!isSubmitting && <Send className="ml-2 h-4 w-4" />}
                   </Button>
-                </Link>
-                <p className="text-sm text-slate-500 mt-4">
-                  Don't have an account? You can easily create one in seconds.
-                </p>
-              </div>
+                </form>
+              ) : (
+                <div className="text-center py-10 animate-in zoom-in fade-in duration-300">
+                  <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <ShieldCheck className="h-10 w-10" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Submission Successful!</h3>
+                  <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                    Your voice has been safely recorded. Please copy your secure Tracking ID below.
+                  </p>
+                  <div className="bg-muted p-6 rounded-xl border border-border inline-block mb-8">
+                    <p className="text-sm text-muted-foreground font-semibold uppercase tracking-wider mb-2">Your Tracking ID</p>
+                    <p className="text-4xl font-mono font-bold text-primary">{trackingId}</p>
+                  </div>
+                  <div>
+                    <Button variant="outline" onClick={() => setTrackingId("")} className="h-12 px-8">Submit Another</Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 

@@ -1,4 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { supabase } from './lib/supabase';
 import Home from './pages/Home';
 import SubmitComplaint from './pages/SubmitComplaint';
 import TrackStatus from './pages/TrackStatus';
@@ -8,19 +10,63 @@ import UserAuth from './pages/UserAuth';
 import UserDashboard from './pages/UserDashboard';
 import { useVisitorTracking } from './hooks/useVisitorTracking';
 
+// A wrapper for protecting routes
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+    });
+    
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  if (isAuthenticated === null) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
+
 function App() {
   useVisitorTracking();
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/submit" element={<SubmitComplaint />} />
+        <Route path="/login" element={<UserAuth />} />
+        
+        {/* Main Interface protected by Login */}
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        } />
+        
+        {/* We keep SubmitComplaint accessible if they try to navigate directly, also protected */}
+        <Route path="/submit" element={
+          <ProtectedRoute>
+            <SubmitComplaint />
+          </ProtectedRoute>
+        } />
+        
+        {/* Dashboard also protected */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
+        } />
+
         <Route path="/track" element={<TrackStatus />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/login" element={<UserAuth />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
       </Routes>
     </Router>
   );
