@@ -21,14 +21,13 @@ export function useVisitorTracking() {
         // Get basic device info (user agent)
         const deviceInfo = navigator.userAgent;
 
-        // Upsert visit record (updates last_visited_at if visitor returns)
-        const { error } = await supabase.from('site_visits').upsert([
+        // Insert visit record
+        const { error } = await supabase.from('site_visits').insert([
           {
             visitor_id: visitorId,
             device_info: deviceInfo,
-            last_visited_at: new Date().toISOString(),
           }
-        ], { onConflict: 'visitor_id' });
+        ]);
 
         if (error) {
           console.error("Failed to track visitor:", error);
