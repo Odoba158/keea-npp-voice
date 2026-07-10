@@ -4,8 +4,11 @@ import SubmitComplaint from './pages/SubmitComplaint';
 import TrackStatus from './pages/TrackStatus';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import { useVisitorTracking } from './hooks/useVisitorTracking';
 
 function App() {
+  useVisitorTracking();
+
   return (
     <Router>
       <Routes>
