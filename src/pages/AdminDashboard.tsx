@@ -124,13 +124,32 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-h-0 overflow-hidden">
         
-        {/* Mobile Header */}
-        <header className="md:hidden bg-card border-b text-foreground h-16 flex items-center justify-between px-4 sticky top-0 z-20">
-          <span className="font-bold tracking-wider">KEEA ADMIN</span>
-          <Link to="/">
-            <LogOut className="h-5 w-5 text-muted-foreground" />
-          </Link>
-        </header>
+        {/* Mobile Header & Nav */}
+        <div className="md:hidden sticky top-0 z-20 bg-card border-b flex flex-col">
+          <header className="text-foreground h-16 flex items-center justify-between px-4">
+            <span className="font-bold tracking-wider">KEEA ADMIN</span>
+            <Link to="/">
+              <LogOut className="h-5 w-5 text-muted-foreground" />
+            </Link>
+          </header>
+          <div className="flex border-t bg-muted/30">
+            <button 
+              className={`flex-1 py-3 text-sm font-medium flex justify-center items-center gap-2 transition-colors ${activeView === 'submissions' ? 'border-b-2 border-primary text-primary bg-background' : 'text-muted-foreground hover:bg-background/50'}`}
+              onClick={() => {
+                setActiveView('submissions');
+                setSelectedTicket(null);
+              }}
+            >
+              <LayoutDashboard className="h-4 w-4" /> Submissions
+            </button>
+            <button 
+              className={`flex-1 py-3 text-sm font-medium flex justify-center items-center gap-2 transition-colors ${activeView === 'visitors' ? 'border-b-2 border-primary text-primary bg-background' : 'text-muted-foreground hover:bg-background/50'}`}
+              onClick={() => setActiveView('visitors')}
+            >
+              <Users className="h-4 w-4" /> Visitors
+            </button>
+          </div>
+        </div>
 
         {/* Topbar */}
         <header className="bg-card border-b h-16 flex items-center justify-between px-6 shrink-0 z-10">
