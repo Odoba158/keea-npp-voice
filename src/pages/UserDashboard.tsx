@@ -70,7 +70,7 @@ export default function UserDashboard() {
             <h1 className="text-3xl font-bold text-slate-900">My Submissions</h1>
             <p className="text-slate-500">Track and view your previous requests, complaints, and suggestions.</p>
           </div>
-          <Link to="/submit">
+          <Link to="/">
             <Button className="shrink-0">
               <Plus className="mr-2 h-4 w-4" /> New Submission
             </Button>
@@ -87,7 +87,7 @@ export default function UserDashboard() {
               <CardDescription className="mb-6">
                 You haven't made any submissions yet. When you do, they will appear here.
               </CardDescription>
-              <Link to="/submit">
+              <Link to="/">
                 <Button>Make your first submission</Button>
               </Link>
             </CardContent>

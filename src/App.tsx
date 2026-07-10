@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import Home from './pages/Home';
-import SubmitComplaint from './pages/SubmitComplaint';
+
 import TrackStatus from './pages/TrackStatus';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
@@ -51,13 +51,7 @@ function App() {
           </ProtectedRoute>
         } />
         
-        {/* We keep SubmitComplaint accessible if they try to navigate directly, also protected */}
-        <Route path="/submit" element={
-          <ProtectedRoute>
-            <SubmitComplaint />
-          </ProtectedRoute>
-        } />
-        
+
         {/* Dashboard also protected */}
         <Route path="/dashboard" element={
           <ProtectedRoute>
