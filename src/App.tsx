@@ -4,6 +4,8 @@ import SubmitComplaint from './pages/SubmitComplaint';
 import TrackStatus from './pages/TrackStatus';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import UserAuth from './pages/UserAuth';
+import UserDashboard from './pages/UserDashboard';
 import { useVisitorTracking } from './hooks/useVisitorTracking';
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
         <Route path="/track" element={<TrackStatus />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/login" element={<UserAuth />} />
+        <Route path="/dashboard" element={<UserDashboard />} />
       </Routes>
     </Router>
   );
