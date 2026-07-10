@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import Home from './pages/Home';
 import SubmitComplaint from './pages/SubmitComplaint';
@@ -13,6 +13,7 @@ import { useVisitorTracking } from './hooks/useVisitorTracking';
 // A wrapper for protecting routes
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -32,7 +33,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} replace />;
 }
 
 function App() {
