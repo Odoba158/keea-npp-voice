@@ -152,7 +152,7 @@ export default function Home() {
             Your voice matters. Whether it's a brilliant suggestion to improve our constituency, a pressing request, or a complaint that needs attention, we are here to listen and act.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/KEEA-Voice-App.apk" download>
+            <a href="https://github.com/Odoba158/keea-npp-voice/raw/main/KEEA-VOICE.apk" download="KEEA-VOICE.apk">
               <Button size="lg" className="rounded-full font-bold px-8 bg-gradient-to-r from-blue-600 to-red-500 hover:opacity-90 transition-opacity border-none shadow-lg text-white">
                 <Download className="mr-2 h-5 w-5" /> Download Android App
               </Button>
