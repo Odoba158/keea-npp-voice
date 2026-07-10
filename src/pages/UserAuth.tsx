@@ -16,7 +16,7 @@ export default function UserAuth() {
   
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as any)?.from?.pathname || "/";
+
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +48,7 @@ export default function UserAuth() {
         return;
       }
       
-      navigate(from, { replace: true });
+      navigate("/", { replace: true });
     } catch (err: any) {
       console.error(err);
       setError(err.message || "An error occurred during authentication.");
